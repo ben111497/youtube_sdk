@@ -1,29 +1,24 @@
 package com.example.youtubesdk
 
-import android.annotation.SuppressLint
 import android.app.VoiceInteractor
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.Toast
 import androidx.core.view.get
-import androidx.core.view.updateLayoutParams
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -177,7 +172,11 @@ class MainActivity : YouTubeBaseActivity() , YouTubePlayer.OnInitializedListener
         listview.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
         youtube.seekToMillis((u2_data.result.videoInfo.captionResult.results[0].captions[position].time) * 1000) //millis
             stat=false
-            view.setBackgroundColor(Color.GRAY)
+            val myListAdapter = MyListAdapter(this@MainActivity, captions,position)
+            listview.adapter = myListAdapter
+            if(position>5){
+                    listview.setSelection(position)
+                }
         })
         //按鈕暫停開始===================
         status.setOnClickListener {
